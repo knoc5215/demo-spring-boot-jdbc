@@ -12,10 +12,11 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Statement;
 
-//@Component
-public class H2Runner implements ApplicationRunner {
+@Component
+public class MysqlRunner implements ApplicationRunner {
 
-    private Logger logger = LoggerFactory.getLogger(H2Runner.class);
+    private Logger logger = LoggerFactory.getLogger(MysqlRunner.class);
+
     @Autowired
     DataSource dataSource;
 
@@ -26,22 +27,18 @@ public class H2Runner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 
         try (Connection connection = dataSource.getConnection()) {
+            logger.debug(String.valueOf(dataSource.getClass()));
+            logger.debug(connection.getMetaData().getURL());
+            logger.debug(connection.getMetaData().getUserName());
 
-            logger.info(connection.getMetaData().getURL());
-            logger.info(connection.getMetaData().getUserName());
-
-            Statement statement = connection.createStatement();
-            String sql = "CREATE TABLE USER(id INTEGER NOT NULL, name VARCHAR(255), PRIMARY KEY (id))";
-            statement.execute(sql);
+//            Statement statement = connection.createStatement();
+//            String sql = "CREATE TABLE USER(id INTEGER NOT NULL, name VARCHAR(255), PRIMARY KEY (id))";
+//            statement.execute(sql);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        jdbcTemplate.execute("INSERT INTO USER VALUES(1, 'Jumen')");
+//        jdbcTemplate.execute("INSERT INTO USER VALUES(1, 'Jumen')");
     }
-
-
-
-
 }
